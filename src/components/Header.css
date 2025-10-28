@@ -1,0 +1,41 @@
+/* src/components/Header.css */
+
+/* 1. Este é o novo <header> (a barra azul) */
+.main-header {
+    background-color: #003366; /* Nosso azul */
+    color: white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    width: 100%;
+  }
+  
+  /* 2. Esta é a <nav> que fica DENTRO do header */
+  .header-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0; /* Aplicamos padding só em cima/baixo */
+    
+    /* 3. Fazemos a navegação ter o MESMO layout das nossas páginas */
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto; /* Centraliza a navegação */
+  }
+  
+  .header-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .header-links a {
+    color: #f4f7f6; /* Nosso cinza claro */
+    text-decoration: none;
+    font-size: 16px;
+    margin-left: 20px;
+    transition: color 0.2s;
+  }
+  
+  .header-links a:hover {
+    color: #99CC33; /* Nosso verde limão */
+  }

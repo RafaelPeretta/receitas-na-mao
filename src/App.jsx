@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect } from 'react';
+// 1. Importações do React Router
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import './App.css';
+import { initDb } from './database/db'; 
+
+// 2. Importações das nossas páginas e componentes
+import Home from './pages/Home';
+import Busca from './pages/Busca';
+import MeuLivro from './pages/MeuLivro';
+import Header from './components/Header'; // <-- Importa o Header
 
 function App() {
-  const [count, setCount] = useState(0)
 
+  useEffect(() => {
+    console.log("App carregado. Inicializando o banco de dados...");
+    initDb();
+  }, []);
+
+  // 3. Configuração do Router
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <BrowserRouter> {/* O 'BrowserRouter' envolve toda a aplicação */}
+      <div className="App">
+        <Header /> {/* O Header agora aparece em todas as páginas */}
+        
+        <main>
+          {/* 'Routes' define a área onde as páginas vão trocar */}
+          <Routes> 
+            {/* 'Route' define cada página individual */}
+            <Route path="/" element={<Home />} />
+            <Route path="/busca" element={<Busca />} />
+            <Route path="/meu-livro" element={<MeuLivro />} />
+          </Routes>
+        </main>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
