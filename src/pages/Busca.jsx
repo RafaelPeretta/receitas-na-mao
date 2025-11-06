@@ -1,11 +1,10 @@
-// src/pages/Busca.jsx
 import React, { useState } from 'react';
 import { buscarReceitasPorDescricao } from '../services/api'; 
 import { salvarReceita } from '../database/db'; 
-import './Busca.css'; // Continua importando para os estilos do card e input
+import toast from 'react-hot-toast'; // 1. IMPORTAR O 'toast'
+import './Busca.css'; 
 
 const Busca = () => {
-  // ... (TODA A SUA LÓGICA JAVASCRIPT CONTINUA IGUAL) ...
   const [termo, setTermo] = useState('');
   const [receitas, setReceitas] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,15 +26,18 @@ const Busca = () => {
   const handleSalvarReceita = (receita) => {
     console.log("Salvando receita:", receita.strMeal);
     const sucesso = salvarReceita(receita); 
+
+    // 2. SUBSTITUIR O 'alert()'
     if (sucesso) {
-      alert(`Receita "${receita.strMeal}" salva no seu Livro de Receitas!`);
+      // toast.success para notificação verde
+      toast.success(`Receita "${receita.strMeal}" salva!`);
     } else {
-      alert("Erro ao salvar a receita. Verifique o console.");
+      // toast.error para notificação vermelha
+      toast.error("Erro ao salvar a receita.");
     }
   };
 
   return (
-    // Usa a nova classe global
     <div className="page-container"> 
       <h1>Busque sua Receita</h1>
       <p>Encontre receitas deliciosas do mundo todo.</p>

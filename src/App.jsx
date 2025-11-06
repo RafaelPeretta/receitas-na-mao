@@ -1,14 +1,15 @@
 import React, { useEffect } from 'react';
-// 1. Importações do React Router
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { initDb } from './database/db'; 
 
-// 2. Importações das nossas páginas e componentes
+// 1. IMPORTAR O TOASTER
+import { Toaster } from 'react-hot-toast';
+
 import Home from './pages/Home';
 import Busca from './pages/Busca';
 import MeuLivro from './pages/MeuLivro';
-import Header from './components/Header'; // <-- Importa o Header
+import Header from './components/Header';
 
 function App() {
 
@@ -17,16 +18,34 @@ function App() {
     initDb();
   }, []);
 
-  // 3. Configuração do Router
   return (
-    <BrowserRouter> {/* O 'BrowserRouter' envolve toda a aplicação */}
+    <BrowserRouter> 
+      {/* 2. ADICIONAR O COMPONENTE TOASTER AQUI */}
+      {/* Ele vai gerenciar todas as notificações */}
+      <Toaster 
+        position="top-right" // Posição das notificações
+        toastOptions={{
+          // Estilos para sucesso
+          success: {
+            style: {
+              background: '#99CC33', // Nosso verde limão
+              color: '#333',
+            },
+          },
+          // Estilos para erro
+          error: {
+            style: {
+              background: '#ff4d4d', // Nosso vermelho
+              color: 'white',
+            },
+          },
+        }} 
+      />
+      
       <div className="App">
-        <Header /> {/* O Header agora aparece em todas as páginas */}
-        
+        <Header />
         <main>
-          {/* 'Routes' define a área onde as páginas vão trocar */}
           <Routes> 
-            {/* 'Route' define cada página individual */}
             <Route path="/" element={<Home />} />
             <Route path="/busca" element={<Busca />} />
             <Route path="/meu-livro" element={<MeuLivro />} />

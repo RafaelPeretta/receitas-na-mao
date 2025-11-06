@@ -1,40 +1,46 @@
 import React, { useState, useEffect } from 'react';
-// Importa a nova função 'deletarReceita'
 import { getReceitasSalvas, deletarReceita } from '../database/db';
-import './Busca.css'; // Continua usando os estilos daqui
+import toast from 'react-hot-toast'; 
+import './Busca.css'; 
 
 const MeuLivro = () => {
   const [receitasSalvas, setReceitasSalvas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Função separada para carregar receitas, para que possamos chamá-la novamente
+  // A função de carregar continua a mesma
   const carregarReceitas = () => {
     setIsLoading(true);
-    console.log("Carregando receitas salvas do banco de dados...");
     const receitas = getReceitasSalvas();
     setReceitasSalvas(receitas);
     setIsLoading(false);
-    console.log("Receitas carregadas:", receitas);
   };
 
-  // useEffect agora só chama a função de carregar
   useEffect(() => {
     carregarReceitas();
-  }, []); // O array '[]' garante que rode só na montagem
+  }, []); 
 
-  // Nova função para lidar com a exclusão
+  // **** FUNÇÃO handleDeletar ATUALIZADA ****
   const handleDeletar = (id, nome) => {
-    // Pede confirmação antes de deletar
     if (window.confirm(`Tem certeza que quer deletar a receita "${nome}"?`)) {
-      console.log("Deletando receita:", id);
+      
+      // 1. ATUALIZAÇÃO OTIMISTA: Remove a receita do estado IMEDIATAMENTE.
+      // O 'filter' cria um novo array com todas as receitas, exceto a que tem o ID que queremos deletar.
+      setReceitasSalvas(receitasAtuais => 
+        receitasAtuais.filter(receita => receita.id !== id)
+      );
+
+      // 2. TAREFA EM SEGUNDO PLANO: Agora, deletamos do banco.
+      // Não precisamos mais verificar o 'sucesso' para atualizar a UI.
       const sucesso = deletarReceita(id);
 
+      // 3. Damos o feedback
       if (sucesso) {
-        alert(`Receita "${nome}" deletada!`);
-        // Atualiza a lista de receitas na tela
-        carregarReceitas(); 
+        toast.success(`Receita "${nome}" deletada!`);
+        // Não precisamos mais chamar carregarReceitas() aqui
       } else {
-        alert("Erro ao deletar a receita. Verifique o console.");
+        toast.error("Erro ao deletar a receita.");
+        // Se deu erro, recarregamos do banco para "desfazer" a exclusão otimista.
+        carregarReceitas(); 
       }
     }
   };
@@ -64,8 +70,8 @@ const MeuLivro = () => {
                 Ver receita original
               </a>
               
-              {/* NOVO BOTÃO DE DELETAR */}
               <button
+                // O onClick continua o mesmo
                 onClick={() => handleDeletar(receita.id, receita.nome)}
                 className="deletar-button"
               >
