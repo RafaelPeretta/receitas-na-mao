@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { buscarReceitasPorDescricao } from '../services/api'; 
 import { salvarReceita } from '../database/db'; 
-import toast from 'react-hot-toast'; // 1. IMPORTAR O 'toast'
+import toast from 'react-hot-toast'; 
 import './Busca.css'; 
+
+// 1. IMPORTAR O NOVO COMPONENTE
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const Busca = () => {
   const [termo, setTermo] = useState('');
@@ -24,15 +27,12 @@ const Busca = () => {
   };
 
   const handleSalvarReceita = (receita) => {
+    // ... (função salvar continua a mesma) ...
     console.log("Salvando receita:", receita.strMeal);
     const sucesso = salvarReceita(receita); 
-
-    // 2. SUBSTITUIR O 'alert()'
     if (sucesso) {
-      // toast.success para notificação verde
       toast.success(`Receita "${receita.strMeal}" salva!`);
     } else {
-      // toast.error para notificação vermelha
       toast.error("Erro ao salvar a receita.");
     }
   };
@@ -55,38 +55,52 @@ const Busca = () => {
           disabled={isLoading}
           className="busca-button"
         >
+          {/* 2. MUDANÇA: Mostra 'Buscando...' no botão, mas o spinner aparecerá abaixo */}
           {isLoading ? 'Buscando...' : 'Buscar'}
         </button>
       </div>
 
-      {mensagem && <p className="busca-mensagem">{mensagem}</p>}
+      {/* 3. SUBSTITUIR o texto de 'Carregando' pelo Spinner */}
+      {isLoading && <LoadingSpinner message="Buscando receitas..." />}
 
-      <div className="resultados-container">
-        {receitas.map((receita) => (
-          <div key={receita.idMeal} className="receita-card">
-            <img 
-              src={receita.strMealThumb} 
-              alt={receita.strMeal} 
-              className="receita-imagem" 
-              crossOrigin="anonymous"
-            />
-            <h3 className="receita-titulo">{receita.strMeal}</h3>
-            <p className="receita-ingredientes">
-              <strong>Ingredientes:</strong> 
-              {receita.strIngredient1}, {receita.strIngredient2}, {receita.strIngredient3} ...
-            </p>
-            <a href={receita.strSource} target="_blank" rel="noopener noreferrer">
-              Ver receita original
-            </a>
-            <button
-              onClick={() => handleSalvarReceita(receita)}
-              className="salvar-button"
-            >
-              Salvar no meu Livro
-            </button>
-          </div>
-        ))}
-      </div>
+      {/* 4. SUBSTITUIR o texto de 'Mensagem' por um componente mais visual (Estado Vazio) */}
+      {!isLoading && mensagem && (
+        <div className="estado-vazio-container">
+          {/* (Poderíamos adicionar um ícone de "não encontrado" aqui) */}
+          <p className="busca-mensagem">{mensagem}</p>
+        </div>
+      )}
+
+      {/* O container de resultados não é mostrado se estiver carregando ou tiver mensagem */}
+      {!isLoading && !mensagem && (
+        <div className="resultados-container">
+          {receitas.map((receita) => (
+            // ... (o card da receita continua o mesmo) ...
+            <div key={receita.idMeal} className="receita-card">
+              <img 
+                src={receita.strMealThumb} 
+                alt={receita.strMeal} 
+                className="receita-imagem" 
+                crossOrigin="anonymous"
+              />
+              <h3 className="receita-titulo">{receita.strMeal}</h3>
+              <p className="receita-ingredientes">
+                <strong>Ingredientes:</strong> 
+                {receita.strIngredient1}, {receita.strIngredient2}, {receita.strIngredient3} ...
+              </p>
+              <a href={receita.strSource} target="_blank" rel="noopener noreferrer">
+                Ver receita original
+              </a>
+              <button
+                onClick={() => handleSalvarReceita(receita)}
+                className="salvar-button"
+              >
+                Salvar no meu Livro
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -1,0 +1,36 @@
+/* src/components/LoadingSpinner.css */
+
+.spinner-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    text-align: center;
+  }
+  
+  .spinner {
+    /* Define a borda do spinner */
+    border: 5px solid #f3f3f3; /* Cinza claro (a trilha) */
+    
+    /* Usa nossa cor azul primária para a parte que gira */
+    border-top: 5px solid #003366; 
+    
+    border-radius: 50%; /* Torna o quadrado em um círculo */
+    
+    /* Adiciona a animação */
+    animation: spin 1s linear infinite;
+  }
+  
+  .spinner-message {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #555;
+  }
+  
+  /* Define a animação 'spin' */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

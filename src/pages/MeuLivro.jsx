@@ -3,11 +3,13 @@ import { getReceitasSalvas, deletarReceita } from '../database/db';
 import toast from 'react-hot-toast'; 
 import './Busca.css'; 
 
+// 1. IMPORTAR O NOVO COMPONENTE
+import LoadingSpinner from '../components/LoadingSpinner';
+
 const MeuLivro = () => {
   const [receitasSalvas, setReceitasSalvas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // A função de carregar continua a mesma
   const carregarReceitas = () => {
     setIsLoading(true);
     const receitas = getReceitasSalvas();
@@ -19,34 +21,29 @@ const MeuLivro = () => {
     carregarReceitas();
   }, []); 
 
-  // **** FUNÇÃO handleDeletar ATUALIZADA ****
   const handleDeletar = (id, nome) => {
+    // ... (função deletar continua a mesma) ...
     if (window.confirm(`Tem certeza que quer deletar a receita "${nome}"?`)) {
-      
-      // 1. ATUALIZAÇÃO OTIMISTA: Remove a receita do estado IMEDIATAMENTE.
-      // O 'filter' cria um novo array com todas as receitas, exceto a que tem o ID que queremos deletar.
       setReceitasSalvas(receitasAtuais => 
         receitasAtuais.filter(receita => receita.id !== id)
       );
-
-      // 2. TAREFA EM SEGUNDO PLANO: Agora, deletamos do banco.
-      // Não precisamos mais verificar o 'sucesso' para atualizar a UI.
       const sucesso = deletarReceita(id);
-
-      // 3. Damos o feedback
       if (sucesso) {
         toast.success(`Receita "${nome}" deletada!`);
-        // Não precisamos mais chamar carregarReceitas() aqui
       } else {
         toast.error("Erro ao deletar a receita.");
-        // Se deu erro, recarregamos do banco para "desfazer" a exclusão otimista.
         carregarReceitas(); 
       }
     }
   };
 
+  // 2. SUBSTITUIR o texto de 'Carregando' pelo Spinner
   if (isLoading) {
-    return <div className="page-container">Carregando seu livro de receitas...</div>;
+    return (
+      <div className="page-container">
+        <LoadingSpinner message="Carregando seu livro de receitas..." />
+      </div>
+    );
   }
 
   return (
@@ -54,10 +51,15 @@ const MeuLivro = () => {
       <h1>Meu Livro de Receitas</h1>
       
       {receitasSalvas.length === 0 ? (
-        <p className="busca-mensagem">Você ainda não salvou nenhuma receita.</p>
+        // 3. MELHORAR o estado vazio
+        <div className="estado-vazio-container">
+          <p className="busca-mensagem">Você ainda não salvou nenhuma receita.</p>
+          <p>Vá até a aba "Buscar Receitas" para adicionar algumas!</p>
+        </div>
       ) : (
         <div className="resultados-container">
           {receitasSalvas.map((receita) => (
+             // ... (o card da receita continua o mesmo) ...
             <div key={receita.id} className="receita-card">
               <img 
                 src={receita.imagemUrl} 
@@ -71,7 +73,6 @@ const MeuLivro = () => {
               </a>
               
               <button
-                // O onClick continua o mesmo
                 onClick={() => handleDeletar(receita.id, receita.nome)}
                 className="deletar-button"
               >

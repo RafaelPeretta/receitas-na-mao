@@ -102,3 +102,14 @@
 .deletar-button:hover {
   background-color: #cc0000; /* Vermelho escuro */
 }
+
+.estado-vazio-container {
+  text-align: center;
+  padding: 50px 20px;
+  color: #777;
+}
+
+.estado-vazio-container .busca-mensagem {
+  font-size: 1.1em;
+  font-weight: 600;
+}
