@@ -1,0 +1,65 @@
+/* src/pages/EditarReceita.css */
+.edit-form {
+    width: 100%;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .form-input,
+  .form-textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Garante que o padding não quebre o layout */
+    font-family: Arial, sans-serif;
+  }
+  
+  .form-textarea {
+    resize: vertical; /* Permite redimensionar verticalmente */
+  }
+  
+  .form-actions {
+    display: flex;
+    gap: 15px; /* Espaço entre os botões */
+    margin-top: 20px;
+  }
+  
+  .form-button-salvar,
+  .form-button-cancelar {
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .form-button-salvar {
+    background-color: #99CC33; /* Nosso verde */
+    color: #333;
+  }
+  .form-button-salvar:hover {
+    background-color: #88b32d;
+  }
+  
+  .form-button-cancelar {
+    background-color: #f4f4f4; /* Cinza claro */
+    color: #555;
+    border: 1px solid #ccc;
+  }
+  .form-button-cancelar:hover {
+    background-color: #e0e0e0;
+  }

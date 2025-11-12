@@ -7,7 +7,7 @@ import { Toaster } from 'react-hot-toast';
 import Home from './pages/Home';
 import Busca from './pages/Busca';
 import MeuLivro from './pages/MeuLivro';
-// import EditarReceita from './pages/EditarReceita'; // 1. DESATIVADO TEMPORARIAMENTE
+import EditarReceita from './pages/EditarReceita'; // 1. DESCOMENTAR A IMPORTAÇÃO
 import Header from './components/Header';
 import Planejador from './pages/Planejador';
 
@@ -35,8 +35,8 @@ function App() {
             <Route path="/busca" element={<Busca />} />
             <Route path="/meu-livro" element={<MeuLivro />} />
             
-            {/* 2. ROTA DESATIVADA TEMPORARIAMENTE */}
-            {/* <Route path="/editar/:receitaId" element={<EditarReceita />} /> */}
+            {/* 2. DESCOMENTAR A ROTA DE EDIÇÃO */}
+            <Route path="/editar/:receitaId" element={<EditarReceita />} />
             
             <Route path="/planejador" element={<Planejador />} />
           </Routes>

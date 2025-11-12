@@ -1,120 +1,156 @@
 /* src/pages/Planejador.css */
 
 .planner-layout {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-  }
-  
-  /* Coluna 1: Calendário */
-  .calendario-semanal {
-    flex: 3; /* Ocupa 3/4 do espaço */
-    display: grid;
-    /* Cria um grid responsivo para os dias */
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-  }
-  
-  .dia-card {
-    border: 1px solid #eee;
-    border-radius: 8px;
-    background-color: #fafafa;
-  }
-  
-  .dia-titulo {
-    font-size: 1.1em;
-    font-weight: bold;
-    color: #333;
-    background-color: #eee;
-    padding: 10px;
-    margin: 0;
-    border-radius: 8px 8px 0 0;
-    text-align: center;
-  }
-  
-  .refeicao-slot {
-    padding: 10px;
-    border-bottom: 1px dashed #ddd;
-  }
-  .refeicao-slot:last-child {
-    border-bottom: none;
-  }
-  
-  .refeicao-label {
-    font-size: 0.9em;
-    font-weight: 600;
-    color: #555;
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .drop-zone {
-    min-height: 80px;
-    background-color: #fff;
-    border: 2px dashed #ccc;
-    border-radius: 4px;
-    padding: 5px;
-    color: #999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  /* Coluna 2: Lista de Receitas */
-  .lista-receitas-salvas {
-    flex: 1; /* Ocupa 1/4 do espaço */
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 10px;
-    /* Trava a altura para permitir scroll interno */
-    height: 80vh; 
-  }
-  
-  .lista-titulo {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #003366; /* Nosso azul */
-    text-align: center;
-    margin-top: 5px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
-  }
-  
-  .receitas-scroll-container {
-    overflow-y: auto; /* Permite rolar a lista de receitas */
-    height: calc(80vh - 60px); /* Subtrai a altura do título */
-  }
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
 
-  /* ... (todo o CSS anterior) ... */
+/* Coluna 1: Calendário */
+.calendario-semanal {
+  flex: 3;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
 
-/* Estilo para os cards na barra lateral direita */
+.dia-card {
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.dia-titulo {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #333;
+  background-color: #eee;
+  padding: 10px;
+  margin: 0;
+  border-radius: 8px 8px 0 0;
+  text-align: center;
+}
+
+.refeicao-slot {
+  padding: 10px;
+  border-bottom: 1px dashed #ddd;
+}
+.refeicao-slot:last-child {
+  border-bottom: none;
+}
+
+.refeicao-label {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #555;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.drop-zone {
+  min-height: 80px;
+  background-color: #fff;
+  border: 2px dashed #ccc;
+  border-radius: 4px;
+  padding: 5px;
+  transition: background-color 0.2s ease;
+}
+
+/* Estilo quando algo está sendo arrastado POR CIMA do slot */
+.drop-zone.is-over {
+  background-color: #e6f7ff; /* Azul claro */
+  border-color: #1890ff;
+}
+
+.drop-zone-vazio {
+  color: #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px; /* Garante altura mínima */
+}
+
+/* Coluna 2: Lista de Receitas */
+.lista-receitas-salvas {
+  flex: 1;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  height: 80vh; 
+  display: flex;
+  flex-direction: column; /* Para a lixeira ficar embaixo */
+}
+
+.lista-titulo {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #003366;
+  text-align: center;
+  margin-top: 5px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #eee;
+}
+
+.receitas-scroll-container {
+  overflow-y: auto;
+  flex-grow: 1; /* Ocupa o espaço disponível */
+  min-height: 200px;
+}
+
+/* Card arrastável */
 .receita-drag-card {
-    display: flex;
-    align-items: center;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 5px;
-    margin: 10px 5px;
-    cursor: grab; /* Indica que é arrastável */
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-  }
-  .receita-drag-card:active {
-    cursor: grabbing; /* Quando está sendo arrastado */
-    background-color: #f0f0f0;
-  }
-  
-  .receita-drag-imagem {
-    width: 40px;
-    height: 40px;
-    border-radius: 4px;
-    object-fit: cover;
-    margin-right: 10px;
-  }
-  
-  .receita-drag-nome {
-    font-size: 0.9em;
-    font-weight: 600;
-    color: #333;
-  }
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  margin: 10px 5px;
+  cursor: grab;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  user-select: none; /* Impede seleção de texto */
+}
+
+/* Estilo quando o card está sendo arrastado */
+.receita-drag-card.is-dragging {
+  background-color: #f0f0f0;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transform: rotate(3deg); /* Efeito de "pegar" */
+}
+
+.receita-drag-card:active {
+  cursor: grabbing;
+}
+
+.receita-drag-imagem {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.receita-drag-nome {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Estilo da Lixeira */
+.lixeira-drop-zone {
+  padding: 20px;
+  margin-top: 15px;
+  border: 2px dashed #ff4d4d;
+  border-radius: 4px;
+  text-align: center;
+  color: #ff4d4d;
+  font-weight: 600;
+  background-color: #fff5f5;
+  transition: background-color 0.2s ease;
+}
+
+.lixeira-drop-zone.is-over {
+  background-color: #ffcccc; /* Vermelho mais forte */
+  color: #a80000;
+}
