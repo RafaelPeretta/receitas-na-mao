@@ -1,33 +1,23 @@
 import sqlite3InitModule from '@sqlite.org/sqlite-wasm';
 
-// Esta variável 'db' vai guardar nossa conexão com o banco
 let db;
 
-/**
- * Inicializa o banco de dados SQLite no navegador.
- * Cria a tabela 'receitas' se ela não existir.
- */
 export const initDb = async () => {
   try {
     console.log('Carregando o módulo SQLite WASM...');
-    
-    // Chama a função de inicialização para carregar o módulo
     const sqlite3 = await sqlite3InitModule({
       print: console.log,
       printErr: console.error,
     });
-    
     console.log('Módulo SQLite carregado. Abrindo o banco de dados...');
-
-    // Tenta abrir o banco de dados usando o 'opfs' (Origin Private File System)
-    db = new sqlite3.oo1.OpfsDb('/receitas-na-mao.db', 'c');
     
+    // Tenta abrir via OPFS
+    db = new sqlite3.oo1.OpfsDb('/receitas-na-mao.db', 'c');
     console.log('Banco de dados aberto com sucesso (OPFS):', db.filename);
 
-    // CRIAÇÃO DA TABELA
     const createTableSql = `
       CREATE TABLE IF NOT EXISTS receitas (
-        id TEXT PRIMARY KEY,
+        id TEXT PRIMARY KEY NOT NULL,
         nome TEXT NOT NULL,
         imagemUrl TEXT,
         categoria TEXT,
@@ -35,15 +25,11 @@ export const initDb = async () => {
         urlOriginal TEXT
       );
     `;
-    
     db.exec(createTableSql);
-    
     console.log('Tabela "receitas" verificada/criada com sucesso (OPFS).');
 
   } catch (err) {
     console.error('Erro ao inicializar o banco de dados (OPFS):', err.message);
-    
-    // Fallback para 'localStorage' se o OPFS falhar
     if (!db) {
       try {
         console.warn('OPFS falhou. Tentando fallback para localStorage...');
@@ -66,15 +52,11 @@ export const initDb = async () => {
   }
 };
 
-/**
- * (CREATE) Adiciona uma nova receita ao banco de dados.
- */
 export const salvarReceita = (receita) => {
   if (!db) {
     console.error("Banco de dados não inicializado. Não é possível salvar.");
     return false;
   }
-
   try {
     const insertSql = `
       INSERT INTO receitas (id, nome, imagemUrl, categoria, instrucoes, urlOriginal)
@@ -86,7 +68,6 @@ export const salvarReceita = (receita) => {
         instrucoes=excluded.instrucoes,
         urlOriginal=excluded.urlOriginal;
     `;
-    
     db.exec(insertSql, {
       bind: [
         receita.idMeal,
@@ -97,59 +78,100 @@ export const salvarReceita = (receita) => {
         receita.strSource
       ]
     });
-
     console.log(`Receita "${receita.strMeal}" salva com sucesso!`);
     return true;
-    
   } catch (err) {
     console.error("Erro ao salvar receita:", err.message);
     return false;
   }
 };
 
+// **** FUNÇÃO ATUALIZADA (Agora retorna Promise) ****
 /**
  * (READ) Busca todas as receitas salvas no banco de dados.
  */
 export const getReceitasSalvas = () => {
-  if (!db) {
-    console.error("Banco de dados não inicializado. Não é possível ler.");
-    return [];
-  }
-
-  try {
-    const selectSql = "SELECT * FROM receitas";
-    const receitas = db.exec(selectSql, { rowMode: 'object' });
-    
-    console.log("Receitas lidas do banco:", receitas);
-    return receitas;
-
-  } catch (err) {
-    console.error("Erro ao ler receitas:", err.message);
-    return [];
-  }
+  return new Promise((resolve, reject) => {
+    if (!db) {
+      console.error("Banco de dados não inicializado.");
+      return reject(new Error("Banco de dados não inicializado."));
+    }
+    try {
+      const selectSql = "SELECT * FROM receitas";
+      const receitas = db.exec(selectSql, { rowMode: 'object' });
+      console.log("Receitas lidas do banco:", receitas);
+      resolve(receitas); // Resolve a promessa com os dados
+    } catch (err) {
+      console.error("Erro ao ler receitas:", err.message);
+      reject(err);
+    }
+  });
 };
 
+// **** FUNÇÃO ATUALIZADA (Agora retorna Promise) ****
 /**
  * (DELETE) Deleta uma receita do banco de dados pelo ID.
  */
 export const deletarReceita = (id) => {
-  if (!db) {
-    console.error("Banco de dados não inicializado. Não é possível deletar.");
-    return false;
-  }
+  return new Promise((resolve, reject) => {
+    if (!db) {
+      console.error("Banco de dados não inicializado.");
+      return reject(new Error("Banco de dados não inicializado."));
+    }
+    try {
+      const deleteSql = "DELETE FROM receitas WHERE id = ?";
+      db.exec(deleteSql, { bind: [id] });
+      console.log(`Receita com ID "${id}" deletada com sucesso!`);
+      resolve(true); // Resolve a promessa com sucesso
+    } catch (err) {
+      console.error("Erro ao deletar receita:", err.message);
+      reject(err);
+    }
+  });
+};
 
-  try {
-    const deleteSql = "DELETE FROM receitas WHERE id = ?";
-    
-    db.exec(deleteSql, {
-      bind: [id]
-    });
+// **** FUNÇÃO ATUALIZADA (Agora retorna Promise) ****
+/**
+ * (READ) Busca UMA receita salva pelo ID.
+ */
+export const getReceitaPorId = (id) => {
+  return new Promise((resolve, reject) => {
+    if (!db) {
+      console.error("Banco de dados não inicializado.");
+      return reject(new Error("Banco de dados não inicializado."));
+    }
+    try {
+      const selectSql = "SELECT * FROM receitas WHERE id = ?";
+      const receita = db.selectObject(selectSql, [id]);
+      console.log(`Receita com ID "${id}" lida do banco:`, receita);
+      resolve(receita); // Resolve com a receita (ou undefined)
+    } catch (err) {
+      console.error("Erro ao ler receita por ID:", err.message);
+      reject(err);
+    }
+  });
+};
 
-    console.log(`Receita com ID "${id}" deletada com sucesso!`);
-    return true; // Retorna sucesso
-
-  } catch (err) {
-    console.error("Erro ao deletar receita:", err.message);
-    return false; // Retorna falha
-  }
+// **** FUNÇÃO ATUALIZADA (Agora retorna Promise) ****
+/**
+ * (UPDATE) Atualiza uma receita no banco de dados.
+ */
+export const updateReceita = (id, nome, instrucoes) => {
+   return new Promise((resolve, reject) => {
+    if (!db) {
+      console.error("Banco de dados não inicializado.");
+      return reject(new Error("Banco de dados não inicializado."));
+    }
+    try {
+      const updateSql = "UPDATE receitas SET nome = ?, instrucoes = ? WHERE id = ?";
+      db.exec(updateSql, {
+        bind: [nome, instrucoes, id]
+      });
+      console.log(`Receita com ID "${id}" atualizada com sucesso!`);
+      resolve(true); // Resolve com sucesso
+    } catch (err) {
+      console.error("Erro ao atualizar receita:", err.message);
+      reject(err);
+    }
+  });
 };

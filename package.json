@@ -12,6 +12,7 @@
   "dependencies": {
     "@sqlite.org/sqlite-wasm": "^3.50.4-build1",
     "react": "^19.1.1",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^19.1.1",
     "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.9.4"

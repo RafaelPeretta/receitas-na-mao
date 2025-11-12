@@ -1,0 +1,120 @@
+/* src/pages/Planejador.css */
+
+.planner-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+  
+  /* Coluna 1: Calendário */
+  .calendario-semanal {
+    flex: 3; /* Ocupa 3/4 do espaço */
+    display: grid;
+    /* Cria um grid responsivo para os dias */
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+  }
+  
+  .dia-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    background-color: #fafafa;
+  }
+  
+  .dia-titulo {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+    background-color: #eee;
+    padding: 10px;
+    margin: 0;
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+  }
+  
+  .refeicao-slot {
+    padding: 10px;
+    border-bottom: 1px dashed #ddd;
+  }
+  .refeicao-slot:last-child {
+    border-bottom: none;
+  }
+  
+  .refeicao-label {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .drop-zone {
+    min-height: 80px;
+    background-color: #fff;
+    border: 2px dashed #ccc;
+    border-radius: 4px;
+    padding: 5px;
+    color: #999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Coluna 2: Lista de Receitas */
+  .lista-receitas-salvas {
+    flex: 1; /* Ocupa 1/4 do espaço */
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    /* Trava a altura para permitir scroll interno */
+    height: 80vh; 
+  }
+  
+  .lista-titulo {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #003366; /* Nosso azul */
+    text-align: center;
+    margin-top: 5px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+  }
+  
+  .receitas-scroll-container {
+    overflow-y: auto; /* Permite rolar a lista de receitas */
+    height: calc(80vh - 60px); /* Subtrai a altura do título */
+  }
+
+  /* ... (todo o CSS anterior) ... */
+
+/* Estilo para os cards na barra lateral direita */
+.receita-drag-card {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    margin: 10px 5px;
+    cursor: grab; /* Indica que é arrastável */
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  .receita-drag-card:active {
+    cursor: grabbing; /* Quando está sendo arrastado */
+    background-color: #f0f0f0;
+  }
+  
+  .receita-drag-imagem {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  .receita-drag-nome {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #333;
+  }

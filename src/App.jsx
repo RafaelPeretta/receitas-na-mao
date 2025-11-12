@@ -2,43 +2,28 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { initDb } from './database/db'; 
-
-// 1. IMPORTAR O TOASTER
 import { Toaster } from 'react-hot-toast';
 
 import Home from './pages/Home';
 import Busca from './pages/Busca';
 import MeuLivro from './pages/MeuLivro';
+// import EditarReceita from './pages/EditarReceita'; // 1. DESATIVADO TEMPORARIAMENTE
 import Header from './components/Header';
+import Planejador from './pages/Planejador';
 
 function App() {
 
   useEffect(() => {
-    console.log("App carregado. Inicializando o banco de dados...");
     initDb();
   }, []);
 
   return (
     <BrowserRouter> 
-      {/* 2. ADICIONAR O COMPONENTE TOASTER AQUI */}
-      {/* Ele vai gerenciar todas as notificações */}
       <Toaster 
-        position="top-right" // Posição das notificações
+        position="top-right" 
         toastOptions={{
-          // Estilos para sucesso
-          success: {
-            style: {
-              background: '#99CC33', // Nosso verde limão
-              color: '#333',
-            },
-          },
-          // Estilos para erro
-          error: {
-            style: {
-              background: '#ff4d4d', // Nosso vermelho
-              color: 'white',
-            },
-          },
+          success: { style: { background: '#99CC33', color: '#333' } },
+          error: { style: { background: '#ff4d4d', color: 'white' } },
         }} 
       />
       
@@ -49,6 +34,11 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/busca" element={<Busca />} />
             <Route path="/meu-livro" element={<MeuLivro />} />
+            
+            {/* 2. ROTA DESATIVADA TEMPORARIAMENTE */}
+            {/* <Route path="/editar/:receitaId" element={<EditarReceita />} /> */}
+            
+            <Route path="/planejador" element={<Planejador />} />
           </Routes>
         </main>
       </div>
