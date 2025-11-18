@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // 1. VERIFICAR SE O LINK ESTÁ IMPORTADO
+import { Link } from 'react-router-dom';
 import { getReceitasSalvas, deletarReceita } from '../database/db';
 import toast from 'react-hot-toast'; 
 import './Busca.css'; 
@@ -68,14 +68,18 @@ const MeuLivro = () => {
                 src={receita.imagemUrl} 
                 alt={receita.nome} 
                 className="receita-imagem" 
-                crossOrigin="anonymous" 
               />
               <h3 className="receita-titulo">{receita.nome}</h3>
-              <a href={receita.urlOriginal} target="_blank" rel="noopener noreferrer">
-                Ver receita original
-              </a>
               
-              {/* 2. DESCOMENTAR O BOTÃO DE EDITAR */}
+              {/* Lógica Condicional para o Link (usando urlOriginal do banco) */}
+              {receita.urlOriginal && receita.urlOriginal.trim() !== "" ? (
+                <a href={receita.urlOriginal} target="_blank" rel="noopener noreferrer">
+                  Ver receita original
+                </a>
+              ) : (
+                <span style={{ color: '#999', fontSize: '14px' }}>Fonte indisponível</span>
+              )}
+              
               <div className="card-actions">
                 <Link to={`/editar/${receita.id}`} className="editar-button">
                   Editar

@@ -1,0 +1,163 @@
+/* src/pages/Home.css */
+
+/* Layout de duas colunas */
+.home-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    min-height: 60vh; /* Garante que ocupe uma boa altura da tela */
+    padding: 40px !important; /* Força um padding maior */
+  }
+  
+  /* --- LADO ESQUERDO (HERO) --- */
+  .home-hero {
+    flex: 1;
+    max-width: 600px;
+  }
+  
+  .hero-title {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+    font-weight: 800;
+  }
+  
+  .hero-title .highlight {
+    color: #003366; /* Nosso azul principal */
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 40px;
+    line-height: 1.6;
+  }
+  
+  .hero-buttons {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .btn-primary, .btn-secondary {
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .btn-primary {
+    background-color: #99CC33; /* Verde Limão */
+    color: #003366; /* Texto Azul */
+    box-shadow: 0 4px 14px rgba(153, 204, 51, 0.4);
+  }
+  
+  .btn-secondary {
+    background-color: #fff;
+    color: #003366;
+    border: 2px solid #003366;
+  }
+  
+  .btn-primary:hover, .btn-secondary:hover {
+    transform: translateY(-2px); /* Efeito de "subir" */
+  }
+  
+  /* --- LADO DIREITO (DESTAQUE) --- */
+  .home-featured {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+  }
+  
+  .featured-label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #999;
+    margin-bottom: 15px;
+    font-weight: 700;
+  }
+  
+  .featured-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); /* Sombra suave e grande */
+    width: 100%;
+    transition: transform 0.3s;
+    border: 1px solid #eee;
+  }
+  
+  .featured-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .featured-image-container {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+  }
+  
+  .featured-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .featured-category {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: #003366;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .featured-content {
+    padding: 25px;
+    text-align: center;
+  }
+  
+  .featured-content h3 {
+    margin: 0 0 10px 0;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .featured-content p {
+    color: #777;
+    margin-bottom: 20px;
+  }
+  
+  .btn-text {
+    color: #003366;
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  /* RESPONSIVIDADE (Para telas menores) */
+  @media (max-width: 900px) {
+    .home-wrapper {
+      flex-direction: column-reverse; /* Inverte a ordem no celular/tablet */
+      text-align: center;
+      padding: 20px !important;
+    }
+    
+    .hero-buttons {
+      justify-content: center;
+    }
+    
+    .home-hero, .home-featured {
+      max-width: 100%;
+    }
+  }
